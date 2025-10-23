@@ -54,8 +54,11 @@
    npm run dev
    ```
 
+**デプロイ**:
+- 🌐 Vercelにデプロイする → [VERCEL-DEPLOY.md](VERCEL-DEPLOY.md) ⭐NEW⭐
+
 **アップデート情報**:
-- 🆕 カテゴリー機能を追加 → [CATEGORY-UPDATE.md](CATEGORY-UPDATE.md) ⭐NEW⭐
+- 🆕 カテゴリー機能を追加 → [CATEGORY-UPDATE.md](CATEGORY-UPDATE.md)
 
 **トラブルシューティング**: 
 - 🚨 「商品の追加エラー」が出る場合 → [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
