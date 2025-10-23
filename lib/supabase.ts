@@ -1,10 +1,13 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsYWNlaG9sZGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODM1NjcwMTAsImV4cCI6MTk5OTE0MzAxMH0.placeholder'
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Supabase環境変数が設定されていません。ローカル環境では.env.localファイルを、Vercelでは環境変数を設定してください。')
+if (typeof window !== 'undefined' && (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)) {
+  console.error('⚠️ Supabase環境変数が設定されていません。')
+  console.error('ローカル環境: .env.localファイルを作成してください')
+  console.error('Vercel: Settings → Environment Variables で設定してください')
+  console.error('詳細: ENV-SETUP.md または VERCEL-ENV-SETUP.md を参照')
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
