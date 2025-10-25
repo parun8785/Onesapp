@@ -139,6 +139,26 @@ export type Database = {
           created_at?: string
         }
       }
+      shopping_lists: {
+        Row: {
+          id: string
+          content: string
+          created_by: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          content: string
+          created_by: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          content?: string
+          created_by?: string
+          created_at?: string
+        }
+      }
     }
   }
 }

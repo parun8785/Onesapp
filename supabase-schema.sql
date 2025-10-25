@@ -104,6 +104,14 @@ create table public.shared_lists (
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
+-- 急ぎ買い出しリストテーブル
+create table public.shopping_lists (
+  id uuid default uuid_generate_v4() primary key,
+  content text not null,
+  created_by uuid references public.users(id) not null,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
 alter table public.shared_lists enable row level security;
 
 -- 全員が共有リストを閲覧可能
@@ -122,12 +130,28 @@ create policy "Users can update their own shared lists" on public.shared_lists
 create policy "Users can delete their own shared lists" on public.shared_lists
   for delete using (created_by = auth.uid());
 
+-- 急ぎ買い出しリストのRLSポリシー
+alter table public.shopping_lists enable row level security;
+
+-- 全員が急ぎ買い出しリストを閲覧可能
+create policy "Authenticated users can view shopping lists" on public.shopping_lists
+  for select using (auth.role() = 'authenticated');
+
+-- ユーザーは急ぎ買い出しリストを作成可能
+create policy "Authenticated users can create shopping lists" on public.shopping_lists
+  for insert with check (auth.role() = 'authenticated');
+
+-- ユーザーは自分が作成した急ぎ買い出しリストを削除可能
+create policy "Users can delete their own shopping lists" on public.shopping_lists
+  for delete using (created_by = auth.uid());
+
 -- インデックスの作成
 create index inventory_items_name_idx on public.inventory_items(name);
 create index inventory_items_category_idx on public.inventory_items(category);
 create index inventory_history_item_id_idx on public.inventory_history(item_id);
 create index todos_created_by_idx on public.todos(created_by);
 create index shared_lists_title_idx on public.shared_lists(title);
+create index shopping_lists_created_at_idx on public.shopping_lists(created_at);
 
 -- トリガー関数: 新規ユーザー作成時に自動的にusersテーブルにレコードを作成
 create or replace function public.handle_new_user()

@@ -6,15 +6,16 @@ import { supabase } from '@/lib/supabase'
 import InventoryManagement from './InventoryManagement'
 import TodoList from './TodoList'
 import SharedLists from './SharedLists'
+import ShoppingList from './ShoppingList'
 
-type Tab = 'inventory' | 'todos' | 'shared'
+type Tab = 'shopping' | 'inventory' | 'todos' | 'shared'
 
 interface DashboardProps {
   user: User
 }
 
 export default function Dashboard({ user }: DashboardProps) {
-  const [activeTab, setActiveTab] = useState<Tab>('inventory')
+  const [activeTab, setActiveTab] = useState<Tab>('shopping')
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
@@ -40,10 +41,20 @@ export default function Dashboard({ user }: DashboardProps) {
       {/* タブナビゲーション */}
       <nav className="bg-background-secondary border-b border-background-tertiary sticky top-0 z-10">
         <div className="container mx-auto px-4">
-          <div className="flex space-x-1">
+          <div className="flex space-x-1 overflow-x-auto">
+            <button
+              onClick={() => setActiveTab('shopping')}
+              className={`px-6 py-3 font-medium transition-colors whitespace-nowrap ${
+                activeTab === 'shopping'
+                  ? 'text-accent border-b-2 border-accent'
+                  : 'text-secondary hover:text-primary'
+              }`}
+            >
+              🛒 急ぎ買い出し
+            </button>
             <button
               onClick={() => setActiveTab('inventory')}
-              className={`px-6 py-3 font-medium transition-colors ${
+              className={`px-6 py-3 font-medium transition-colors whitespace-nowrap ${
                 activeTab === 'inventory'
                   ? 'text-accent border-b-2 border-accent'
                   : 'text-secondary hover:text-primary'
@@ -53,7 +64,7 @@ export default function Dashboard({ user }: DashboardProps) {
             </button>
             <button
               onClick={() => setActiveTab('todos')}
-              className={`px-6 py-3 font-medium transition-colors ${
+              className={`px-6 py-3 font-medium transition-colors whitespace-nowrap ${
                 activeTab === 'todos'
                   ? 'text-accent border-b-2 border-accent'
                   : 'text-secondary hover:text-primary'
@@ -63,7 +74,7 @@ export default function Dashboard({ user }: DashboardProps) {
             </button>
             <button
               onClick={() => setActiveTab('shared')}
-              className={`px-6 py-3 font-medium transition-colors ${
+              className={`px-6 py-3 font-medium transition-colors whitespace-nowrap ${
                 activeTab === 'shared'
                   ? 'text-accent border-b-2 border-accent'
                   : 'text-secondary hover:text-primary'
@@ -77,6 +88,7 @@ export default function Dashboard({ user }: DashboardProps) {
 
       {/* メインコンテンツ */}
       <main className="container mx-auto px-4 py-8">
+        {activeTab === 'shopping' && <ShoppingList user={user} />}
         {activeTab === 'inventory' && <InventoryManagement user={user} />}
         {activeTab === 'todos' && <TodoList user={user} />}
         {activeTab === 'shared' && <SharedLists user={user} />}
